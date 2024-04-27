@@ -260,6 +260,11 @@ class Messages {
     render_row(msg_data) {
         let message = msg_data.message.replace(/(\r\n|\n|\r)/g, "<br/>");
 
+        // Convert URLs into clickable links
+        message = message.replace(/\b(https?:\/\/\S+)/gi, function(url) {
+            return '<a href="' + url + '" target="_blank">' + url + '</a>';
+        });
+
         let row = '<tr>';
         if (false) {
             row += '<td>' + msg_data.id + '</td>';
