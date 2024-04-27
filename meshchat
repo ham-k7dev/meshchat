@@ -557,7 +557,12 @@ function file_download()
     print("\r")
 
     if f then
-        io.write(f:read("*a"))
+        local chunk_size = 512 * 1024 -- 512 KB chunk size
+        while true do
+            local chunk = f:read(chunk_size)
+            if not chunk then break end
+            io.write(chunk)
+        end
         f:close()
     end
 end
@@ -808,9 +813,14 @@ function upload_file()
         nixio.fs.remove(tmp_upload_dir .. "/file")
         print([[{"status":500, "response":"Not enough storage, delete some files"}]])
     else
+        local chunk_size = 512 * 1024 -- 512 KB chunk size
         local fi = io.open(tmp_upload_dir .. "/file", "r")
         local fo = io.open(local_files_dir .. "/" .. uploadfilename, "w")
-        fo:write(fi:read("*a"))
+        while true do
+            local chunk = fi:read(chunk_size)
+            if not chunk then break end
+            fo:write(chunk)
+        end
         fi:close()
         fo:close()
         nixio.fs.remove(tmp_upload_dir .. "/file")
