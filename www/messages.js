@@ -261,7 +261,7 @@ class Messages {
         let message = msg_data.message.replace(/(\r\n|\n|\r)/g, "<br/>");
 
         // Convert URLs into clickable links
-        message = message.replace(/\b(https?:\/\/\S+)/gi, function(url) {
+        message = message.replace(/(https?:\/\/[^\s<>]+)/gi, function(url) {
             return '<a href="' + url + '" target="_blank">' + url + '</a>';
         });
 
